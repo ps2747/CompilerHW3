@@ -33,7 +33,7 @@ namespace ToyLLGen
 
 	void Scope::printSymbols(int level){
 		for(auto iterator = m_symbols.cbegin(); iterator != m_symbols.cend(); iterator++)
-			printf(" %d  %s  %s \n", level, iterator->second.type.c_str(),iterator->second.name.c_str());
+			printf(" %d  %s  %s %s %s\n", level, iterator->second.type.c_str(),iterator->second.name.c_str(),iterator->second.isArray() ? "Array" : "Not_Array",iterator->second.isFunction() ? "Func" :"Not_Func");
 		++level;
 		for(auto childIt = m_children.cbegin(); childIt != m_children.cend(); childIt++)
 			(*childIt)->printSymbols(level);	

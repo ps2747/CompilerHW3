@@ -32,6 +32,11 @@ namespace ToyLLGen{
 	{
 		Scope *globalScope = symbolTable.getCurrentScope();
 		setBlock(globalScope);
+
+		m_ll += "@.str = private constant[4 x i8] c\"\%d\\0A\\00\" \n";
+		m_ll +="declare i32 @printf(i8*, ...)\n";
+
+
 	}
 	Block::Block(const BlockType blockType, const Type returnType, const string &funcName, Block *parentBlock, const int tempCounter)
 	{	
@@ -157,7 +162,9 @@ namespace ToyLLGen{
 		/*if(symbolTable.isInGlobal())
 			throw InvalidOperation("InvalidOperation: endfunction must be placed in function");*/
 		string varName, varType;
-		prepare("%1", varName, varType);
+		varName = "%1";
+		varType = "i32*";
+		//prepare("%1", varName, varType);
 		string exitLabel;
 		auto tempVar = allocTemp(ref(varType));
 		m_ll += tempVar+" = load "+varType+" %1, align 4\n";
@@ -166,7 +173,7 @@ namespace ToyLLGen{
 		symbolTable.pop();
 		symbolTable.pop();
 
-		m_ll+=ReplaceString(m_funcLL, "{EXIT_HERE}", exitLabel);
+		//m_ll+=ReplaceString(m_ll, "{EXIT_HERE}", exitLabel);
 
 		return m_ll;
 	}
